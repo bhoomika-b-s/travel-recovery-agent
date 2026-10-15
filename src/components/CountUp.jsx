@@ -13,13 +13,6 @@ export default function CountUp({ end, duration = 1400, prefix = '', suffix = ''
   useEffect(() => {
     if (!inView) return
 
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    if (reduce) {
-      fromRef.current = end
-      setValue(end)
-      return
-    }
-
     const from = fromRef.current
     const start = performance.now()
     let frame

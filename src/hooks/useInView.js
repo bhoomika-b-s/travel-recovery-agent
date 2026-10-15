@@ -11,9 +11,8 @@ export function useInView({ threshold = 0.15, rootMargin = '0px 0px -40px 0px' }
     const node = ref.current
     if (!node) return
 
-    // No animation wanted, or very old browser: just show everything.
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    if (reduce || typeof IntersectionObserver === 'undefined') {
+    // Very old browser without IntersectionObserver: just show everything.
+    if (typeof IntersectionObserver === 'undefined') {
       setInView(true)
       return
     }

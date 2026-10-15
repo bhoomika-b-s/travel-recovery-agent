@@ -100,23 +100,38 @@
     @apply transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-100;
   }
 
-  /* Loading skeleton block (used in later parts) */
+  /* Loading skeleton block */
   .skeleton {
-    @apply animate-shimmer rounded-lg bg-[linear-gradient(90deg,#e2e8f0_25%,#f1f5f9_50%,#e2e8f0_75%)] bg-size-[200%_200%];
+    @apply animate-shimmer rounded-lg bg-[linear-gradient(90deg,#e2e8f0_25%,#f1f5f9_50%,#e2e8f0_75%)] bg-size-[200%_100%];
   }
 }
 
-/* ---------- Respect "reduce motion" ---------- */
+/* ---------- "Reduce motion" setting ----------
+   Phones with this setting on used to see a completely flat site.
+   Now only the looping and large movements are switched off:
+   drifting blobs, floating chips, gradient shifts and pings.
+   One-time effects stay (fades, the gauge filling, count-up, the timeline),
+   and slides and pops become gentle fades. */
+@keyframes rm-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
+  .animate-blob,
+  .animate-float,
+  .animate-float-slow,
+  .animate-gradient,
+  .animate-ping,
+  .animate-fly {
+    animation: none !important;
+  }
+  .animate-fade-up,
+  .animate-slide-in,
+  .animate-pop {
+    animation: rm-fade 0.6s ease-out both !important;
   }
 }
