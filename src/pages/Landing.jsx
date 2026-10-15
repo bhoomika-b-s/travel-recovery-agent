@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CountUp from '../components/CountUp'
+import Icon from '../components/Icon'
 import Navbar from '../components/Navbar'
 import Reveal from '../components/Reveal'
 import { useInView } from '../hooks/useInView'
@@ -8,19 +9,19 @@ import { useInView } from '../hooks/useInView'
 // ---------- Static content ----------
 
 const STEPS = [
-  { icon: '📡', title: 'Detect', text: 'Airport staff mark a flight delayed or cancelled. One action alerts every booked passenger.' },
-  { icon: '🧠', title: 'Prioritise', text: 'The agent scores urgency from the connection gap, delay length and your own deadline.' },
-  { icon: '🔎', title: 'Evaluate', text: 'Flights, trains and buses are filtered by budget, seats and destination, then ranked.' },
-  { icon: '🗺️', title: 'Recover', text: 'Accept an option and get a step-by-step itinerary with exactly what to do next.' },
+  { icon: 'radio', title: 'Detect', text: 'Airport staff mark a flight delayed or cancelled. One action alerts every booked passenger.' },
+  { icon: 'chart', title: 'Prioritise', text: 'The agent scores urgency from the connection gap, delay length and your own deadline.' },
+  { icon: 'search', title: 'Evaluate', text: 'Flights, trains and buses are filtered by budget, seats and destination, then ranked.' },
+  { icon: 'map', title: 'Recover', text: 'Accept an option and get a step-by-step itinerary with exactly what to do next.' },
 ]
 
 const FEATURES = [
-  { icon: '⚡', title: 'Real-time alerts', text: 'Passengers see the disruption the moment staff report it, with no refresh needed.', grad: 'from-amber-400 to-orange-500' },
-  { icon: '📊', title: 'Explainable priority', text: 'A 0 to 100 score where every point traces back to a named rule you can read.', grad: 'from-indigo-500 to-violet-600' },
-  { icon: '🎯', title: 'Constraint-aware options', text: 'Your budget, deadline and preferred modes decide which alternatives you see.', grad: 'from-emerald-400 to-teal-600' },
-  { icon: '🛫', title: 'Route around the problem', text: 'If your flight is the problem, the agent can leave from your origin city instead.', grad: 'from-sky-400 to-blue-600' },
-  { icon: '🧾', title: 'Settlement ledger', text: 'Fares are recorded as pending settlement with the airport authority. No payment gateway.', grad: 'from-fuchsia-500 to-pink-600' },
-  { icon: '🔐', title: 'Secure by design', text: 'Row Level Security keeps passengers to their own data and staff to their own airport.', grad: 'from-slate-600 to-slate-900' },
+  { icon: 'zap', title: 'Real-time alerts', text: 'Passengers see the disruption the moment staff report it, with no refresh needed.', grad: 'from-amber-400 to-orange-500' },
+  { icon: 'chart', title: 'Explainable priority', text: 'A 0 to 100 score where every point traces back to a named rule you can read.', grad: 'from-indigo-500 to-violet-600' },
+  { icon: 'target', title: 'Constraint-aware options', text: 'Your budget, deadline and preferred modes decide which alternatives you see.', grad: 'from-emerald-400 to-teal-600' },
+  { icon: 'plane', title: 'Route around the problem', text: 'If your flight is the problem, the agent can leave from your origin city instead.', grad: 'from-sky-400 to-blue-600' },
+  { icon: 'receipt', title: 'Settlement ledger', text: 'Fares are recorded as pending settlement with the airport authority. No payment gateway.', grad: 'from-fuchsia-500 to-pink-600' },
+  { icon: 'shield', title: 'Secure by design', text: 'Row Level Security keeps passengers to their own data and staff to their own airport.', grad: 'from-slate-600 to-slate-900' },
 ]
 
 const STATS = [
@@ -55,11 +56,11 @@ function HeroPreview() {
       <div className="absolute -inset-4 rounded-4xl bg-linear-to-r from-indigo-400/30 via-violet-400/30 to-fuchsia-400/30 blur-2xl" />
 
       {/* floating chips */}
-      <div className="absolute -right-3 -top-5 z-10 animate-float rounded-xl border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-700 shadow-lg">
-        🚨 Live alert received
+      <div className="absolute -right-3 -top-5 z-10 flex animate-float items-center gap-1.5 rounded-xl border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-700 shadow-lg">
+        <Icon name="bell" className="h-3.5 w-3.5" /> Live alert received
       </div>
-      <div className="absolute -bottom-5 -left-3 z-10 animate-float-slow rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-semibold text-emerald-700 shadow-lg">
-        ✅ Fare: pending settlement
+      <div className="absolute -bottom-5 -left-3 z-10 flex animate-float-slow items-center gap-1.5 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-semibold text-emerald-700 shadow-lg">
+        <Icon name="check" className="h-3.5 w-3.5" strokeWidth={3} /> Fare: pending settlement
       </div>
 
       <div className="relative rounded-3xl border border-white/70 bg-white/85 p-5 shadow-2xl shadow-indigo-200/60 backdrop-blur-xl">
@@ -128,9 +129,10 @@ function HeroPreview() {
           }`}
         >
           <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-slate-900">
-              <span className="mr-2 rounded-full bg-indigo-600 px-2 py-0.5 text-xs text-white">#1</span>
-              ✈️ IndiGo 6E-2711
+            <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+              <span className="rounded-full bg-indigo-600 px-2 py-0.5 text-xs text-white">#1</span>
+              <Icon name="plane" className="h-4 w-4 text-indigo-600" />
+              IndiGo 6E-2711
             </p>
             <p className="text-lg font-bold text-slate-900">₹5,900</p>
           </div>
@@ -167,8 +169,8 @@ function Journey() {
               inView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
             }`}
           >
-            <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-indigo-100 bg-white text-3xl shadow-lg shadow-indigo-100">
-              <span aria-hidden="true">{step.icon}</span>
+            <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-indigo-100 bg-white text-indigo-600 shadow-lg shadow-indigo-100">
+              <Icon name={step.icon} className="h-7 w-7" />
               <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-linear-to-br from-indigo-600 to-violet-600 text-xs font-bold text-white">
                 {i + 1}
               </span>
@@ -182,6 +184,18 @@ function Journey() {
   )
 }
 
+// A ticked bullet used in the two audience cards.
+function Tick({ tone, children }) {
+  return (
+    <li className="flex gap-2.5">
+      <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${tone}`}>
+        <Icon name="check" className="h-3 w-3" strokeWidth={3} />
+      </span>
+      {children}
+    </li>
+  )
+}
+
 // ---------- The page ----------
 
 export default function Landing() {
@@ -190,7 +204,7 @@ export default function Landing() {
       <Navbar />
 
       {/* ===== Hero ===== */}
-      <section className="relative -mt-15 overflow-hidden pt-15">
+      <section className="relative -mt-15.25 overflow-hidden pt-15.25">
         <div className="bg-grid absolute inset-0 -z-10 mask-b-to-85%" />
         <div className="absolute -left-24 top-10 -z-10 h-80 w-80 animate-blob rounded-full bg-indigo-300/50 blur-3xl" />
         <div className="absolute right-0 top-0 -z-10 h-96 w-96 animate-blob rounded-full bg-fuchsia-300/40 blur-3xl [animation-delay:-5s]" />
@@ -215,9 +229,9 @@ export default function Landing() {
               your budget and deadline, and builds a recovery itinerary in seconds.
             </p>
 
-            <div className="mt-8 flex animate-fade-up flex-col items-center gap-3 [animation-delay:300ms] sm:flex-row lg:justify-start justify-center">
+            <div className="mt-8 flex animate-fade-up flex-col items-center justify-center gap-3 [animation-delay:300ms] sm:flex-row lg:justify-start">
               <Link to="/signup" className="btn-primary w-full sm:w-auto">
-                Get started as a passenger <span aria-hidden="true">→</span>
+                Get started as a passenger <Icon name="arrowRight" className="h-4 w-4" />
               </Link>
               <Link to="/login" className="btn-secondary w-full sm:w-auto">
                 Login
@@ -278,9 +292,9 @@ export default function Landing() {
               <Reveal key={f.title} delay={(i % 3) * 120}>
                 <div className="card-hover group h-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                   <div
-                    className={`flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br ${f.grad} text-2xl shadow-lg transition duration-300 group-hover:scale-110 group-hover:rotate-3`}
+                    className={`flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br ${f.grad} text-white shadow-lg transition duration-300 group-hover:rotate-3 group-hover:scale-110`}
                   >
-                    <span aria-hidden="true">{f.icon}</span>
+                    <Icon name={f.icon} className="h-6 w-6" />
                   </div>
                   <h3 className="mt-4 text-lg font-bold text-slate-900">{f.title}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{f.text}</p>
@@ -295,13 +309,15 @@ export default function Landing() {
       <section className="mx-auto grid max-w-6xl gap-5 px-4 py-20 md:grid-cols-2">
         <Reveal>
           <div className="card-hover h-full rounded-3xl border border-indigo-100 bg-linear-to-br from-indigo-50 to-white p-8 shadow-sm">
-            <span className="text-3xl" aria-hidden="true">🧳</span>
-            <h3 className="mt-3 text-2xl font-bold text-slate-900">For passengers</h3>
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-300/50">
+              <Icon name="briefcase" className="h-6 w-6" />
+            </span>
+            <h3 className="mt-4 text-2xl font-bold text-slate-900">For passengers</h3>
             <ul className="mt-4 space-y-2.5 text-sm text-slate-700">
-              <li className="flex gap-2"><span className="text-indigo-600">✓</span> Save your flight, connection and constraints once.</li>
-              <li className="flex gap-2"><span className="text-indigo-600">✓</span> Get a live alert the moment staff report a disruption.</li>
-              <li className="flex gap-2"><span className="text-indigo-600">✓</span> See a priority score and the top 3 ranked alternatives.</li>
-              <li className="flex gap-2"><span className="text-indigo-600">✓</span> Accept in one tap and receive your recovery itinerary.</li>
+              <Tick tone="bg-indigo-100 text-indigo-700">Save your flight, connection and constraints once.</Tick>
+              <Tick tone="bg-indigo-100 text-indigo-700">Get a live alert the moment staff report a disruption.</Tick>
+              <Tick tone="bg-indigo-100 text-indigo-700">See a priority score and the top 3 ranked alternatives.</Tick>
+              <Tick tone="bg-indigo-100 text-indigo-700">Accept in one tap and receive your recovery itinerary.</Tick>
             </ul>
             <Link to="/signup" className="btn-primary mt-6">
               Create passenger account
@@ -311,13 +327,15 @@ export default function Landing() {
 
         <Reveal delay={150}>
           <div className="card-hover h-full rounded-3xl border border-slate-200 bg-linear-to-br from-slate-100 to-white p-8 shadow-sm">
-            <span className="text-3xl" aria-hidden="true">🛂</span>
-            <h3 className="mt-3 text-2xl font-bold text-slate-900">For airport staff</h3>
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-800 text-white shadow-lg shadow-slate-300/50">
+              <Icon name="badge" className="h-6 w-6" />
+            </span>
+            <h3 className="mt-4 text-2xl font-bold text-slate-900">For airport staff</h3>
             <ul className="mt-4 space-y-2.5 text-sm text-slate-700">
-              <li className="flex gap-2"><span className="text-slate-700">✓</span> See every flight arriving at or leaving your airport.</li>
-              <li className="flex gap-2"><span className="text-slate-700">✓</span> Review passengers and who is at risk of missing a connection.</li>
-              <li className="flex gap-2"><span className="text-slate-700">✓</span> Mark a flight delayed or cancelled with a reason.</li>
-              <li className="flex gap-2"><span className="text-slate-700">✓</span> Every affected passenger is notified automatically.</li>
+              <Tick tone="bg-slate-200 text-slate-700">See every flight arriving at or leaving your airport.</Tick>
+              <Tick tone="bg-slate-200 text-slate-700">Review passengers and who is at risk of missing a connection.</Tick>
+              <Tick tone="bg-slate-200 text-slate-700">Mark a flight delayed or cancelled with a reason.</Tick>
+              <Tick tone="bg-slate-200 text-slate-700">Every affected passenger is notified automatically.</Tick>
             </ul>
             <Link to="/login" state={{ mode: 'staff' }} className="btn-secondary mt-6">
               Staff login
@@ -329,7 +347,7 @@ export default function Landing() {
       {/* ===== Call to action ===== */}
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <Reveal>
-          <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-size-[200%_200%] animate-gradient p-10 text-center shadow-2xl shadow-indigo-300/50 sm:p-14">
+          <div className="relative animate-gradient overflow-hidden rounded-3xl bg-linear-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-size-[200%_200%] p-10 text-center shadow-2xl shadow-indigo-300/50 sm:p-14">
             <div className="absolute -left-10 -top-10 h-40 w-40 animate-float-slow rounded-full bg-white/10" />
             <div className="absolute -bottom-12 -right-8 h-52 w-52 animate-float rounded-full bg-white/10" />
             <h2 className="relative text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
@@ -341,9 +359,9 @@ export default function Landing() {
             <div className="relative mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 to="/signup"
-                className="inline-flex w-full items-center justify-center rounded-xl bg-white px-6 py-3 font-semibold text-indigo-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-indigo-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
               >
-                Try it now →
+                Try it now <Icon name="arrowRight" className="h-4 w-4" />
               </Link>
               <Link
                 to="/login"
@@ -359,7 +377,7 @@ export default function Landing() {
       {/* ===== Simulation notice ===== */}
       <section className="mx-auto max-w-6xl px-4 pb-12">
         <div className="flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          <span aria-hidden="true" className="text-xl">⚠️</span>
+          <Icon name="alert" className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
           <p>
             <strong>Demo notice:</strong> all alternative flights, trains and buses are <strong>simulated data</strong>.
             No real tickets are booked and no real payment is taken. Fares are only recorded as "pending settlement"
@@ -369,7 +387,9 @@ export default function Landing() {
       </section>
 
       <footer className="border-t border-slate-200 bg-white py-8 text-center text-sm text-slate-500">
-        <p className="font-semibold text-slate-700">✈️ TravelRecover AI</p>
+        <p className="inline-flex items-center gap-2 font-semibold text-slate-700">
+          <Icon name="plane" className="h-4 w-4 text-indigo-600" /> TravelRecover AI
+        </p>
         <p className="mt-1">Hackathon project · Problem Statement 4.1 · React, Vite, Tailwind and Supabase</p>
       </footer>
     </div>
