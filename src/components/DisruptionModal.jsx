@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { formatDateTimeIST, isoToISTInput, istInputToISO, istInputToMs } from '../lib/time'
+import { inputBase } from './FormField'
+import Icon from './Icon'
 
 const REASONS = [
   'Air traffic congestion',
@@ -66,31 +68,50 @@ export default function DisruptionModal({ mode, flight, onClose, onDone }) {
 
   return (
     <div
-      className="fixed inset-0 z-30 flex items-center justify-center bg-slate-900/50 p-4"
+      className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm"
       onClick={busy ? undefined : onClose}
     >
       <form
         onSubmit={handleSubmit}
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+        className="w-full max-w-md animate-pop overflow-hidden rounded-3xl bg-white shadow-2xl"
       >
-        <h2 className="text-xl font-bold text-slate-900">
-          {isDelay ? 'Mark flight delayed' : 'Mark flight cancelled'}
-        </h2>
-        <p className="mt-1 text-sm text-slate-500">
-          {flight.flight_number} · {flight.origin_code} → {flight.destination_code} · scheduled{' '}
-          {formatDateTimeIST(flight.scheduled_departure)} IST
-        </p>
+        {/* Coloured header */}
+        <div
+          className={`flex items-start gap-3 px-6 py-5 text-white ${
+            isDelay ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 'bg-gradient-to-r from-red-500 to-rose-600'
+          }`}
+        >
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/20 ring-1 ring-white/30">
+            <Icon name={isDelay ? 'clock' : 'alert'} className="h-5 w-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h2 className="text-xl font-extrabold">{isDelay ? 'Mark flight delayed' : 'Mark flight cancelled'}</h2>
+            <p className="mt-0.5 text-sm text-white/85">
+              {flight.flight_number} · {flight.origin_code} → {flight.destination_code} · scheduled{' '}
+              {formatDateTimeIST(flight.scheduled_departure)} IST
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={busy}
+            aria-label="Close"
+            className="rounded-lg p-1.5 text-white/80 transition hover:bg-white/20 hover:text-white disabled:opacity-50"
+          >
+            <Icon name="x" className="h-5 w-5" />
+          </button>
+        </div>
 
-        <div className="mt-5 space-y-4">
+        <div className="space-y-4 px-6 py-5">
           {isDelay && (
             <label className="block">
-              <span className="mb-1 block text-sm font-medium text-slate-700">New departure time (IST)</span>
+              <span className="mb-1.5 block text-sm font-medium text-slate-700">New departure time (IST)</span>
               <input
                 type="datetime-local"
                 value={newDeparture}
                 onChange={(e) => setNewDeparture(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                className={inputBase}
               />
               <span className="mt-1 block text-xs text-slate-500">
                 The arrival time is shifted by the same amount automatically.
@@ -99,12 +120,12 @@ export default function DisruptionModal({ mode, flight, onClose, onDone }) {
           )}
 
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700">Reason</span>
+            <span className="mb-1.5 block text-sm font-medium text-slate-700">Reason</span>
             <input
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder="e.g. Bad weather"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              className={inputBase}
             />
             <div className="mt-2 flex flex-wrap gap-1.5">
               {REASONS.map((r) => (
@@ -112,45 +133,50 @@ export default function DisruptionModal({ mode, flight, onClose, onDone }) {
                   key={r}
                   type="button"
                   onClick={() => setReason(r)}
-                  className="rounded-full border border-slate-300 px-2.5 py-1 text-xs text-slate-600 hover:border-indigo-400 hover:text-indigo-700"
+                  className={`rounded-full border px-2.5 py-1 text-xs transition ${
+                    reason === r
+                      ? 'border-indigo-500 bg-indigo-50 font-semibold text-indigo-700'
+                      : 'border-slate-300 text-slate-600 hover:border-indigo-400 hover:text-indigo-700'
+                  }`}
                 >
                   {r}
                 </button>
               ))}
             </div>
           </label>
+
+          <p
+            className={`flex items-start gap-2 rounded-xl p-3 text-sm ${
+              isDelay ? 'bg-amber-50 text-amber-900' : 'bg-red-50 text-red-800'
+            }`}
+          >
+            <Icon name="bell" className="mt-0.5 h-4 w-4 shrink-0" />
+            Every passenger on this flight will get an instant notification.
+          </p>
+
+          {error && (
+            <p
+              role="alert"
+              className="flex animate-pop items-start gap-2 rounded-xl bg-red-50 px-3.5 py-2.5 text-sm text-red-700"
+            >
+              <Icon name="alert" className="mt-0.5 h-4 w-4 shrink-0" />
+              {error}
+            </p>
+          )}
         </div>
 
-        <p
-          className={`mt-4 rounded-lg p-3 text-sm ${
-            isDelay ? 'bg-amber-50 text-amber-900' : 'bg-red-50 text-red-800'
-          }`}
-        >
-          Every passenger on this flight will get an instant notification.
-        </p>
-
-        {error && (
-          <p role="alert" className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
-            {error}
-          </p>
-        )}
-
-        <div className="mt-5 flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={busy}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
-          >
+        <div className="flex justify-end gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4">
+          <button type="button" onClick={onClose} disabled={busy} className="btn-secondary !px-5 !py-2.5 disabled:opacity-60">
             Back
           </button>
           <button
             type="submit"
             disabled={busy}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold text-white disabled:opacity-60 ${
-              isDelay ? 'bg-amber-600 hover:bg-amber-700' : 'bg-red-600 hover:bg-red-700'
+            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 disabled:opacity-70 ${
+              isDelay ? 'bg-amber-600 shadow-amber-300/50 hover:bg-amber-700' : 'bg-red-600 shadow-red-300/50 hover:bg-red-700'
             }`}
           >
+            {busy && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />}
             {busy ? 'Notifying passengers...' : isDelay ? 'Confirm delay' : 'Confirm cancellation'}
           </button>
         </div>
